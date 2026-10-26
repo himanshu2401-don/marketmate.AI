@@ -1,0 +1,6 @@
+{
+  "name": "MarketMate.AI — Marketing Engine",
+  "description": "An intelligent marketing copilot that transforms business briefs and product ideas into complete multi-channel campaign strategies, content plans, and actionable launch assets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
