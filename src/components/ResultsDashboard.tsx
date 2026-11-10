@@ -17,9 +17,15 @@ import {
   ArrowUpRight,
   Lightbulb,
   Check,
+  FileSpreadsheet,
 } from 'lucide-react';
 import { CampaignPlan } from '../types';
 import { EditCardModal } from './EditCardModal';
+import {
+  exportCampaignToPDF,
+  exportCampaignToWord,
+  exportCampaignToExcel,
+} from '../utils/exportUtils';
 
 interface ResultsDashboardProps {
   plan: CampaignPlan;
@@ -35,10 +41,38 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   isRegenerating,
 }) => {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [downloadingFormat, setDownloadingFormat] = useState<string | null>(null);
   const [editingModal, setEditingModal] = useState<{
     key: keyof CampaignPlan | 'themeAndSlogan';
     title: string;
   } | null>(null);
+
+  const handleDownloadPDF = () => {
+    setDownloadingFormat('pdf');
+    try {
+      exportCampaignToPDF(plan);
+    } finally {
+      setTimeout(() => setDownloadingFormat(null), 1200);
+    }
+  };
+
+  const handleDownloadDocs = () => {
+    setDownloadingFormat('doc');
+    try {
+      exportCampaignToWord(plan);
+    } finally {
+      setTimeout(() => setDownloadingFormat(null), 1200);
+    }
+  };
+
+  const handleDownloadExcel = () => {
+    setDownloadingFormat('xls');
+    try {
+      exportCampaignToExcel(plan);
+    } finally {
+      setTimeout(() => setDownloadingFormat(null), 1200);
+    }
+  };
 
   const copyToClipboard = (text: string, identifier: string) => {
     navigator.clipboard.writeText(text);
@@ -132,75 +166,6 @@ ${plan.nextSteps.map((step, i) => `${i + 1}. ${step}`).join('\n')}
 
   return (
     <section id="dashboard" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Top Banner with Actions */}
-      <div className="bg-[#21113D] text-white rounded-3xl p-6 sm:p-8 mb-8 shadow-2xl border border-[#7138D8]/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-        <div>
-          <div className="flex flex-wrap items-center gap-2.5 mb-2">
-            <span
-              className={`text-xs uppercase tracking-wider font-semibold px-3 py-1 rounded-full ${
-                plan.isSample ? 'bg-[#7138D8]/80 text-white' : 'bg-emerald-500/80 text-white'
-              }`}
-            >
-              {plan.isSample ? 'Sample Demonstration' : 'Live Generated Plan'}
-            </span>
-            <span className="text-xs text-purple-200">
-              Created {new Date(plan.createdAt).toLocaleDateString()}
-            </span>
-            {plan.platform && (
-              <span className="text-xs text-[#B8A0FF] font-medium bg-white/10 px-2.5 py-0.5 rounded-md">
-                {plan.platform}
-              </span>
-            )}
-          </div>
-
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            {plan.businessName}
-          </h2>
-          <p className="text-sm text-purple-200/90 mt-1 max-w-2xl leading-relaxed">
-            Full 12-section campaign blueprint. Every card can be copied, edited live, or exported as ready-to-share markdown.
-          </p>
-        </div>
-
-        {/* Global Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          <button
-            onClick={onRegenerate}
-            disabled={isRegenerating}
-            className="bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer"
-            title="Regenerate this campaign plan"
-          >
-            <RefreshCw className={`w-4 h-4 ${isRegenerating ? 'animate-spin' : ''}`} />
-            <span>Regenerate</span>
-          </button>
-
-          <button
-            onClick={handleDownloadMarkdown}
-            className="bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer"
-            title="Download formatted Markdown file"
-          >
-            <Download className="w-4 h-4 text-[#B8A0FF]" />
-            <span>Export (.MD)</span>
-          </button>
-
-          <button
-            onClick={handleDownloadJSON}
-            className="bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer"
-            title="Download JSON structure"
-          >
-            <FileText className="w-4 h-4 text-[#B8A0FF]" />
-            <span>JSON</span>
-          </button>
-
-          <button
-            onClick={() => copyToClipboard(JSON.stringify(plan, null, 2), 'full-json')}
-            className="bg-[#7138D8] hover:bg-[#5f2bc0] active:scale-95 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 cursor-pointer shadow-md"
-          >
-            {copiedKey === 'full-json' ? <Check className="w-4 h-4 text-emerald-300" /> : <Copy className="w-4 h-4" />}
-            <span>{copiedKey === 'full-json' ? 'Copied Plan!' : 'Copy Plan'}</span>
-          </button>
-        </div>
-      </div>
-
       {/* 12-Card Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
@@ -693,7 +658,99 @@ ${plan.nextSteps.map((step, i) => `${i + 1}. ${step}`).join('\n')}
 
       </div>
 
-      {/* In-place Card Editor Modal */}
+      {/* Export & Download Strategy Report Bar */}
+      <div className="mt-8 bg-white rounded-3xl p-6 sm:p-8 border border-purple-100 shadow-xl shadow-[#7138D8]/5 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-bold uppercase tracking-wider text-[#7138D8]">
+              Campaign Blueprint Ready
+            </span>
+          </div>
+          <h3 className="text-xl font-extrabold text-[#21113D]">
+            Download Strategy Report: {plan.businessName}
+          </h3>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1 max-w-xl">
+            Export all 12 pillars, content calendar, captions, and KPI benchmarks in your required document or spreadsheet format:
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+          {/* PDF Download */}
+          <button
+            onClick={handleDownloadPDF}
+            disabled={downloadingFormat === 'pdf'}
+            className="bg-rose-50 hover:bg-rose-100 active:scale-95 text-rose-700 border border-rose-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer shadow-xs"
+            title="Download formatted multi-page PDF report"
+          >
+            <Download className={`w-4 h-4 text-rose-600 ${downloadingFormat === 'pdf' ? 'animate-bounce' : ''}`} />
+            <span>{downloadingFormat === 'pdf' ? 'Generating PDF...' : 'Download PDF'}</span>
+          </button>
+
+          {/* Word Docs Download */}
+          <button
+            onClick={handleDownloadDocs}
+            disabled={downloadingFormat === 'doc'}
+            className="bg-blue-50 hover:bg-blue-100 active:scale-95 text-blue-700 border border-blue-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer shadow-xs"
+            title="Download as Microsoft Word / Google Docs document (.doc)"
+          >
+            <FileText className={`w-4 h-4 text-blue-600 ${downloadingFormat === 'doc' ? 'animate-bounce' : ''}`} />
+            <span>{downloadingFormat === 'doc' ? 'Preparing Doc...' : 'Word Docs (.doc)'}</span>
+          </button>
+
+          {/* Excel Spreadsheet Download */}
+          <button
+            onClick={handleDownloadExcel}
+            disabled={downloadingFormat === 'xls'}
+            className="bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-700 border border-emerald-200 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer shadow-xs"
+            title="Download multi-pillar campaign workbook as Excel spreadsheet (.xls)"
+          >
+            <FileSpreadsheet className={`w-4 h-4 text-emerald-600 ${downloadingFormat === 'xls' ? 'animate-bounce' : ''}`} />
+            <span>{downloadingFormat === 'xls' ? 'Exporting Excel...' : 'Excel (.xls)'}</span>
+          </button>
+
+          {/* Markdown Download */}
+          <button
+            onClick={handleDownloadMarkdown}
+            className="bg-purple-50 hover:bg-purple-100 active:scale-95 text-purple-700 border border-purple-200 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-1.5 cursor-pointer"
+            title="Download formatted Markdown file"
+          >
+            <Download className="w-3.5 h-3.5 text-purple-600" />
+            <span>.MD</span>
+          </button>
+
+          {/* JSON Download */}
+          <button
+            onClick={handleDownloadJSON}
+            className="bg-gray-50 hover:bg-gray-100 active:scale-95 text-gray-700 border border-gray-200 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-1.5 cursor-pointer"
+            title="Download JSON structure"
+          >
+            <FileText className="w-3.5 h-3.5 text-gray-600" />
+            <span>JSON</span>
+          </button>
+
+          {/* Regenerate Button */}
+          <button
+            onClick={onRegenerate}
+            disabled={isRegenerating}
+            className="bg-gray-50 hover:bg-gray-100 active:scale-95 text-gray-700 border border-gray-200 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer"
+            title="Regenerate this campaign plan with AI"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRegenerating ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Regenerate</span>
+          </button>
+
+          {/* Copy Full Plan */}
+          <button
+            onClick={() => copyToClipboard(JSON.stringify(plan, null, 2), 'full-json')}
+            className="bg-[#7138D8] hover:bg-[#5f2bc0] active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 cursor-pointer shadow-md"
+            title="Copy full JSON plan to clipboard"
+          >
+            {copiedKey === 'full-json' ? <Check className="w-4 h-4 text-emerald-300" /> : <Copy className="w-4 h-4" />}
+            <span>{copiedKey === 'full-json' ? 'Copied!' : 'Copy Plan'}</span>
+          </button>
+        </div>
+      </div>
       {editingModal && (
         <EditCardModal
           isOpen={Boolean(editingModal)}

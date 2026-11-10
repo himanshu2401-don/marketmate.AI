@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
-import { Sparkles, Rocket, Menu, X, History, ChevronDown } from 'lucide-react';
-import { CampaignPlan } from '../types';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { Sparkles, Rocket, Menu, X, History, ChevronDown, Check } from 'lucide-react';
+import { useCampaign } from '../context/CampaignContext';
 
-interface NavbarProps {
-  onLaunchClick: () => void;
-  savedCampaigns: CampaignPlan[];
-  onSelectCampaign: (plan: CampaignPlan) => void;
-  activePlanId?: string;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({
-  onLaunchClick,
-  savedCampaigns,
-  onSelectCampaign,
-  activePlanId,
-}) => {
+export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const { savedCampaigns, activePlan, setActivePlan } = useCampaign();
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Campaign Planner', path: '/campaign-planner' },
+    { name: 'Social Content', path: '/social-content' },
+    { name: 'Growth Strategy', path: '/growth-strategy' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
+  ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#21113D]/95 backdrop-blur-md border-b border-[#7138D8]/20 text-white transition-all">
+    <header className="sticky top-0 z-50 bg-[#21113D]/95 backdrop-blur-md border-b border-[#7138D8]/20 text-white transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Zone */}
-        <a href="#home" className="flex items-center gap-3 group shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#7138D8] to-[#B8A0FF] flex items-center justify-center shadow-lg shadow-[#7138D8]/40 group-hover:scale-105 transition-transform">
-            <Sparkles className="w-5 h-5 text-white" />
+        <Link to="/" className="flex items-center gap-3 group shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-black/70 border border-[#7138D8]/50 flex items-center justify-center p-1 shadow-lg shadow-[#7138D8]/30 group-hover:scale-105 transition-transform overflow-hidden">
+            <img
+              src="/assets/aistudio/Purple_Grunge_Respawn_Lab_Logo_9f1cceeb.png"
+              alt="MarketMate.AI Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div className="leading-tight">
             <span className="text-xl font-bold tracking-tight text-white block">
@@ -34,41 +39,36 @@ export const Navbar: React.FC<NavbarProps> = ({
               Marketing Engine
             </span>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop Nav Items */}
-        <div className="hidden md:flex items-center gap-7 text-sm font-medium text-purple-100">
-          <a href="#home" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            Home
-          </a>
-          <a href="#features" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            Features
-          </a>
-          <a href="#tools" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            AI Tools
-          </a>
-          <a href="#how-it-works" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            How It Works
-          </a>
-          <a href="#sample" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            Sample
-          </a>
-          <a href="#about" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            About
-          </a>
-          <a href="#contact" className="hover:text-[#B8A0FF] transition-colors whitespace-nowrap">
-            Contact
-          </a>
-        </div>
+        <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-purple-100">
+          {navLinks.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `transition-colors whitespace-nowrap py-1 border-b-2 ${
+                  isActive
+                    ? 'text-white border-[#B8A0FF] font-semibold'
+                    : 'text-purple-200/80 hover:text-white border-transparent'
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
+        </nav>
 
         {/* Actions Zone */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
+        <div className="hidden sm:flex items-center gap-3 shrink-0">
           {savedCampaigns.length > 0 && (
             <div className="relative">
               <button
                 onClick={() => setHistoryOpen(!historyOpen)}
-                className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-semibold text-purple-100 flex items-center gap-2 transition"
+                className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-semibold text-purple-100 flex items-center gap-2 transition cursor-pointer"
                 title="View saved campaign plans"
+                aria-expanded={historyOpen}
               >
                 <History className="w-3.5 h-3.5 text-[#B8A0FF]" />
                 <span>History ({savedCampaigns.length})</span>
@@ -76,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
 
               {historyOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-[#21113D] border border-[#7138D8]/40 rounded-2xl shadow-2xl p-2 z-50">
+                <div className="absolute right-0 mt-2 w-72 bg-[#21113D] border border-[#7138D8]/50 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-xl">
                   <div className="text-[11px] font-semibold text-purple-300 px-3 py-1.5 uppercase tracking-wider border-b border-white/10">
                     Saved Campaigns
                   </div>
@@ -85,11 +85,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <button
                         key={plan.id}
                         onClick={() => {
-                          onSelectCampaign(plan);
+                          setActivePlan(plan);
                           setHistoryOpen(false);
+                          navigate('/campaign-planner');
                         }}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-xs transition flex flex-col ${
-                          activePlanId === plan.id
+                        className={`w-full text-left px-3 py-2 rounded-lg text-xs transition flex flex-col cursor-pointer ${
+                          activePlan?.id === plan.id
                             ? 'bg-[#7138D8] text-white font-semibold'
                             : 'text-purple-100 hover:bg-white/10'
                         }`}
@@ -106,21 +107,28 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           )}
 
-          <button
-            onClick={onLaunchClick}
-            className="bg-[#7138D8] hover:bg-[#5f2bc0] active:scale-95 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md shadow-[#7138D8]/30 hover:shadow-lg hover:shadow-[#7138D8]/50 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap"
+          <Link
+            to="/campaign-planner"
+            className="bg-[#7138D8] hover:bg-[#5f2bc0] active:scale-95 text-white px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm shadow-md shadow-[#7138D8]/30 hover:shadow-lg hover:shadow-[#7138D8]/50 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap"
           >
             <Rocket className="w-4 h-4" />
-            Launch Marketing Engine
-          </button>
+            <span>Launch Engine</span>
+          </Link>
         </div>
 
         {/* Mobile Hamburger Toggle */}
-        <div className="md:hidden flex items-center">
+        <div className="lg:hidden flex items-center gap-2">
+          <Link
+            to="/campaign-planner"
+            className="sm:hidden bg-[#7138D8] text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5"
+          >
+            <Rocket className="w-3.5 h-3.5" /> Launch
+          </Link>
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-purple-200 hover:text-white rounded-lg focus:outline-none"
-            aria-label="Toggle menu"
+            className="p-2 text-purple-200 hover:text-white rounded-lg focus:outline-none cursor-pointer"
+            aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -129,70 +137,54 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#21113D] border-b border-[#7138D8]/30 px-6 py-5 space-y-3">
-          <a
-            href="#home"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            Home
-          </a>
-          <a
-            href="#features"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            Features
-          </a>
-          <a
-            href="#tools"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            AI Tools
-          </a>
-          <a
-            href="#how-it-works"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            How It Works
-          </a>
-          <a
-            href="#sample"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            Sample Campaign
-          </a>
-          <a
-            href="#about"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-purple-100 hover:text-[#B8A0FF] font-medium text-sm"
-          >
-            Contact
-          </a>
+        <div className="lg:hidden bg-[#21113D] border-b border-[#7138D8]/30 px-6 py-5 space-y-3">
+          {navLinks.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `block py-2 text-sm font-medium transition-colors ${
+                  isActive ? 'text-[#B8A0FF] font-bold pl-2 border-l-2 border-[#B8A0FF]' : 'text-purple-100 hover:text-white'
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
 
-          <div className="pt-3 border-t border-white/10">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onLaunchClick();
-              }}
+          <div className="pt-3 border-t border-white/10 space-y-2">
+            <Link
+              to="/campaign-planner"
+              onClick={() => setMobileMenuOpen(false)}
               className="w-full bg-[#7138D8] text-white py-3 rounded-xl font-semibold flex justify-center items-center gap-2 text-sm shadow-md"
             >
               <Rocket className="w-4 h-4" /> Launch Marketing Engine
-            </button>
+            </Link>
+
+            {savedCampaigns.length > 0 && (
+              <div className="pt-2 text-xs text-purple-300">
+                <span className="font-semibold block mb-1">Quick Load Saved Campaign:</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {savedCampaigns.slice(0, 3).map((plan) => (
+                    <button
+                      key={plan.id}
+                      onClick={() => {
+                        setActivePlan(plan);
+                        setMobileMenuOpen(false);
+                        navigate('/campaign-planner');
+                      }}
+                      className="bg-white/10 px-2.5 py-1 rounded-md text-[11px] text-white hover:bg-white/20 truncate max-w-[140px]"
+                    >
+                      {plan.businessName}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };

@@ -92,130 +92,72 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
               
               {/* Outer Glow Halo */}
-              <div className="absolute -inset-4 bg-gradient-to-tr from-[#7138D8]/40 via-[#B8A0FF]/20 to-transparent rounded-3xl blur-2xl -z-10" />
+              <div className="absolute -inset-4 bg-gradient-to-tr from-[#7138D8]/40 via-[#B8A0FF]/25 to-transparent rounded-3xl blur-2xl -z-10" />
 
-              {/* Glassmorphic 3D Card Stack */}
-              <div className="bg-gradient-to-b from-white/15 to-white/5 p-6 sm:p-7 rounded-3xl border border-white/20 backdrop-blur-xl shadow-2xl shadow-black/40 relative overflow-hidden">
+              {/* 3D Model Artwork Container */}
+              <div className="group relative rounded-3xl border border-white/20 bg-gradient-to-b from-white/10 to-[#21113D]/60 backdrop-blur-xl shadow-2xl shadow-black/50 overflow-hidden transition-all duration-500 hover:border-[#B8A0FF]/40">
                 
-                {/* Floating Violet AI Core */}
-                <div className="relative flex items-center justify-between pb-6 border-b border-white/10">
-                  <div className="flex items-center gap-4">
-                    <div className="relative">
-                      {/* Animated Core Rings */}
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#7138D8] via-[#8B5CF6] to-[#B8A0FF] flex items-center justify-center shadow-lg shadow-[#7138D8]/60 animate-pulse-subtle">
-                        <Sparkles className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#21113D] shadow-sm animate-ping" />
-                      <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#21113D]" />
-                    </div>
+                {/* 3D Render Image */}
+                <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-[#21113D]">
+                  <img
+                    src="/src/assets/images/hero_marketing_engine_core_1793087834424.jpg"
+                    alt="MarketMate.AI Futuristic 3D Marketing Engine Core with Floating Glass Cards and Neural Network"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
 
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] uppercase tracking-wider font-semibold text-[#B8A0FF]">
-                          MarketMate Engine
-                        </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#7138D8]/50 text-purple-100 font-mono">
-                          v1.0
-                        </span>
-                      </div>
-                      <p className="text-base font-bold text-white">Active Strategic Synthesizer</p>
-                      <p className="text-xs text-purple-200/80">Real-time reasoning & multi-channel planning</p>
-                    </div>
+                  {/* Gradient overlays for seamless depth blending */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21113D] via-transparent to-transparent opacity-70 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#21113D]/40 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Floating Micro-badge: Realtime Engine status */}
+                  <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#21113D]/80 border border-white/15 backdrop-blur-md text-[11px] font-semibold text-white shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>AI Core Active</span>
+                    <span className="text-purple-300">·</span>
+                    <span className="text-[#B8A0FF] font-mono text-[10px]">Gemini 3.8</span>
                   </div>
 
-                  <div className="hidden sm:block text-right">
-                    <span className="text-[10px] text-purple-300 block">Model</span>
-                    <span className="text-xs font-mono font-semibold text-[#B8A0FF]">Gemini 3.8</span>
+                  {/* Floating Micro-badge: 3D Engine tag */}
+                  <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 border border-white/20 backdrop-blur-md text-[10px] font-mono text-purple-200">
+                    <Sparkles className="w-3 h-3 text-[#B8A0FF]" />
+                    <span>OCTANE 3D</span>
                   </div>
                 </div>
 
-                {/* Growth Chart Simulation & Interactive Cards */}
-                <div className="mt-5 space-y-3.5">
-                  {/* Card 1: Objective & Funnel */}
-                  <div className="bg-white/10 hover:bg-white/15 transition rounded-2xl p-3.5 border border-white/15 backdrop-blur-md flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-[#7138D8]/40 border border-[#B8A0FF]/30 flex items-center justify-center text-[#B8A0FF]">
-                        <Target className="w-5 h-5" />
+                {/* Sub-card interactive telemetry overlay */}
+                <div className="p-5 sm:p-6 bg-[#21113D]/90 backdrop-blur-md border-t border-white/10 space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Live Metric 1 */}
+                    <div className="bg-white/5 hover:bg-white/10 transition p-3 rounded-xl border border-white/10">
+                      <div className="flex items-center gap-2 text-[#B8A0FF] text-xs font-semibold mb-1">
+                        <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Growth Modeling</span>
                       </div>
-                      <div>
-                        <p className="text-[11px] text-purple-200">Objective Optimized</p>
-                        <p className="text-sm font-semibold text-white">Brand Discovery & Conversion</p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-semibold bg-[#7138D8] text-white px-2.5 py-1 rounded-md">
-                      Calibrated
-                    </span>
-                  </div>
-
-                  {/* Card 2: Growth Chart Visual */}
-                  <div className="bg-white/10 rounded-2xl p-3.5 border border-white/15 backdrop-blur-md">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-emerald-400" />
-                        <span className="text-xs font-semibold text-white">Growth Trajectory Projection</span>
-                      </div>
-                      <span className="text-[11px] text-emerald-400 font-mono font-semibold">4-Week Cadence</span>
+                      <p className="text-xs text-purple-100 font-medium truncate">Multi-week Cadence</p>
                     </div>
 
-                    {/* SVG Growth Curve */}
-                    <div className="h-16 w-full pt-1">
-                      <svg className="w-full h-full overflow-visible" viewBox="0 0 280 60" preserveAspectRatio="none">
-                        <defs>
-                          <linearGradient id="growthGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#7138D8" stopOpacity="0.5" />
-                            <stop offset="100%" stopColor="#7138D8" stopOpacity="0.0" />
-                          </linearGradient>
-                        </defs>
-                        <path
-                          d="M0,50 Q40,46 70,38 T140,28 T210,16 T280,6 L280,60 L0,60 Z"
-                          fill="url(#growthGrad)"
-                        />
-                        <path
-                          d="M0,50 Q40,46 70,38 T140,28 T210,16 T280,6"
-                          fill="none"
-                          stroke="#B8A0FF"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                        />
-                        <circle cx="70" cy="38" r="3.5" fill="#FFFFFF" stroke="#7138D8" strokeWidth="2" />
-                        <circle cx="140" cy="28" r="3.5" fill="#FFFFFF" stroke="#7138D8" strokeWidth="2" />
-                        <circle cx="210" cy="16" r="3.5" fill="#FFFFFF" stroke="#7138D8" strokeWidth="2" />
-                        <circle cx="280" cy="6" r="4.5" fill="#34D399" stroke="#21113D" strokeWidth="2" />
-                      </svg>
-                    </div>
-                    <div className="flex justify-between text-[10px] text-purple-200/80 pt-1 font-mono">
-                      <span>Launch Week</span>
-                      <span>Mid Funnel</span>
-                      <span>Scale & Retention</span>
+                    {/* Live Metric 2 */}
+                    <div className="bg-white/5 hover:bg-white/10 transition p-3 rounded-xl border border-white/10">
+                      <div className="flex items-center gap-2 text-[#B8A0FF] text-xs font-semibold mb-1">
+                        <MessageSquare className="w-3.5 h-3.5 text-[#B8A0FF]" />
+                        <span>Copy Synthesizer</span>
+                      </div>
+                      <p className="text-xs text-purple-100 font-medium truncate">Hook · Body · CTA</p>
                     </div>
                   </div>
 
-                  {/* Card 3: Content Preview */}
-                  <div className="bg-white/10 hover:bg-white/15 transition rounded-2xl p-3.5 border border-white/15 backdrop-blur-md flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-[#7138D8]/40 border border-[#B8A0FF]/30 flex items-center justify-center text-[#B8A0FF]">
-                        <MessageSquare className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="text-[11px] text-purple-200">Copy & Captions</p>
-                        <p className="text-sm font-semibold text-white">3 High-Conversion Hooks Ready</p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-semibold bg-emerald-500/80 text-white px-2.5 py-1 rounded-md">
-                      Generated
-                    </span>
+                  {/* Sample Trigger */}
+                  <div className="pt-2 flex items-center justify-between text-xs text-purple-200">
+                    <span className="text-[11px] text-purple-300">Interactive 3D Marketing Architecture</span>
+                    <button
+                      onClick={onSamplePreviewClick}
+                      className="text-[#B8A0FF] hover:text-white font-semibold inline-flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <span>Explore Sample Plan</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                </div>
-
-                {/* Footer Link to Sample */}
-                <div className="mt-5 pt-3.5 border-t border-white/10 text-center">
-                  <button
-                    onClick={onSamplePreviewClick}
-                    className="text-xs text-[#B8A0FF] hover:text-white inline-flex items-center gap-1.5 transition-colors font-medium cursor-pointer"
-                  >
-                    <span>Click to inspect "Biskify" sample campaign</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
                 </div>
 
               </div>

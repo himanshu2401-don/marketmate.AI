@@ -13,7 +13,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { CampaignFormState, CampaignPlan } from '../types';
-import { BISKIFY_SAMPLE } from '../data/sampleData';
+import { SAMPLE_CAMPAIGN } from '../data/sampleData';
 
 interface CampaignEngineProps {
   formData: CampaignFormState;
@@ -36,18 +36,18 @@ export const CampaignEngine: React.FC<CampaignEngineProps> = ({
 }) => {
   const [fillToast, setFillToast] = useState(false);
 
-  const fillWithBiskify = () => {
+  const fillWithSample = () => {
     setFormData({
-      businessName: 'Biskify Artisanal Cookies',
+      businessName: 'AuraHealth Smart Ring',
       productDescription:
-        'Micro-batch cookies slow-baked with 100% grass-fed churned butter, single-origin 70% dark chocolate chunks, and unrefined demerara crystals. Clean label indulgence with zero palm oil.',
-      industry: 'Specialty Confectionery & Food DTC',
+        'Aerospace-grade titanium smart ring delivering medical-grade biometrics, sleep recovery tracking, and 7-day battery life with zero subscription fees.',
+      industry: 'Health Tech & Wearable Wellness DTC',
       targetAudience:
-        'Young urban professionals and remote hybrid workers (ages 23–40) struggling with 3 PM screen fatigue, looking for wholesome yet indulgent mindful snack rituals.',
+        'Active professionals, endurance athletes, and wellness enthusiasts (ages 24–45) seeking continuous circadian and HRV recovery metrics without screen distraction.',
       marketingObjective: 'Brand Awareness & Discovery',
       platform: 'Instagram',
-      campaignTone: 'Creative',
-      budget: '$1,500 total ($375/week)',
+      campaignTone: 'Premium',
+      budget: '$2,500 total ($625/week)',
       duration: '4 Weeks',
     });
     setFillToast(true);
@@ -86,7 +86,7 @@ export const CampaignEngine: React.FC<CampaignEngineProps> = ({
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={fillWithBiskify}
+              onClick={fillWithSample}
               className="text-xs bg-[#7138D8]/40 hover:bg-[#7138D8] text-[#B8A0FF] hover:text-white px-3.5 py-1.5 rounded-lg border border-[#7138D8]/50 transition-colors cursor-pointer flex items-center gap-1.5 font-medium"
             >
               {fillToast ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Sparkles className="w-3.5 h-3.5" />}
@@ -282,7 +282,7 @@ export const CampaignEngine: React.FC<CampaignEngineProps> = ({
                     onClick={onLoadSample}
                     className="text-xs font-bold text-[#7138D8] hover:underline inline-flex items-center gap-1 cursor-pointer"
                   >
-                    Load Biskify Sample Campaign instead <ArrowRight className="w-3.5 h-3.5" />
+                    Load Sample Campaign instead <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -291,9 +291,18 @@ export const CampaignEngine: React.FC<CampaignEngineProps> = ({
 
           {/* Form Footer */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-purple-100">
-            <div className="text-xs text-gray-500 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#7138D8]" />
-              <span>Server-side AI synthesis · No secrets exposed to client</span>
+            <div className="space-y-1">
+              <div className="text-xs text-gray-500 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#7138D8]" />
+                <span>Server-side AI synthesis · No secrets exposed to client</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-600">
+                <span className="font-semibold text-[#21113D]">Downloadable in:</span>
+                <span className="bg-rose-50 text-rose-700 font-semibold px-2 py-0.5 rounded border border-rose-200">PDF (.pdf)</span>
+                <span className="bg-blue-50 text-blue-700 font-semibold px-2 py-0.5 rounded border border-blue-200">Word Docs (.doc)</span>
+                <span className="bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded border border-emerald-200">Excel (.xls)</span>
+                <span className="bg-purple-50 text-purple-700 font-semibold px-2 py-0.5 rounded border border-purple-200">Markdown & JSON</span>
+              </div>
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">

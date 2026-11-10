@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, Hash, MessageSquare, ArrowRight, Eye, Check } from 'lucide-react';
-import { BISKIFY_SAMPLE } from '../data/sampleData';
+import { SAMPLE_CAMPAIGN } from '../data/sampleData';
 
 interface SampleShowcaseProps {
   onLoadSample: () => void;
@@ -19,13 +19,13 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7138D8] bg-[#7138D8]/10 px-3 py-1 rounded-full mb-2">
                 <span>Sample Campaign Showcase</span>
                 <span>·</span>
-                <span>Fictional Brand Study</span>
+                <span>Flagship Hardware Study</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-[#21113D] tracking-tight">
-                Case Study: Biskify Artisanal Cookies
+                Case Study: AuraHealth Smart Wearable
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-2xl leading-relaxed">
-                See how a direct-to-consumer specialty cookie brand turns a simple ingredient brief into a cohesive multi-channel marketing campaign plan.
+                See how a high-growth wellness wearable brand turns a hardware and biometrics brief into a cohesive multi-channel marketing campaign plan.
               </p>
             </div>
 
@@ -34,7 +34,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
               className="bg-[#7138D8] hover:bg-[#5f2bc0] active:scale-95 text-white px-6 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-md transition flex items-center gap-2 cursor-pointer shrink-0"
             >
               <Eye className="w-4 h-4" />
-              <span>Load Full Biskify Campaign</span>
+              <span>Load Full Sample Campaign</span>
             </button>
           </div>
 
@@ -81,13 +81,13 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
 
                   <div className="bg-white p-5 rounded-xl border border-purple-100 space-y-3">
                     <p className="text-sm sm:text-base font-bold text-[#21113D] leading-snug">
-                      "{BISKIFY_SAMPLE.captions[0].hook}"
+                      "{SAMPLE_CAMPAIGN.captions[0].hook}"
                     </p>
                     <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                      {BISKIFY_SAMPLE.captions[0].body}
+                      {SAMPLE_CAMPAIGN.captions[0].body}
                     </p>
                     <div className="pt-2 border-t border-purple-50 text-xs font-semibold text-[#7138D8]">
-                      👉 {BISKIFY_SAMPLE.captions[0].callToAction}
+                      👉 {SAMPLE_CAMPAIGN.captions[0].callToAction}
                     </div>
                   </div>
                 </div>
@@ -100,10 +100,10 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
                       Core Campaign Theme
                     </span>
                     <p className="text-lg font-bold text-[#21113D]">
-                      {BISKIFY_SAMPLE.themeAndSlogan.theme}
+                      {SAMPLE_CAMPAIGN.themeAndSlogan.theme}
                     </p>
                     <p className="text-xs text-gray-500 leading-relaxed">
-                      Positions artisanal snacking as an intentional mental pause during intense workdays.
+                      Positions wearable wellness as seamless recovery optimization rather than intrusive notification overload.
                     </p>
                   </div>
 
@@ -112,10 +112,10 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
                       Brand Slogan & Punchline
                     </span>
                     <p className="text-xl font-extrabold text-[#7138D8]">
-                      "{BISKIFY_SAMPLE.themeAndSlogan.slogan}"
+                      "{SAMPLE_CAMPAIGN.themeAndSlogan.slogan}"
                     </p>
                     <p className="text-xs text-gray-500 leading-relaxed">
-                      Highlighting grass-fed butter purity without artificial additives or preservatives.
+                      Highlighting screen-free biometric tracking with aerospace titanium durability.
                     </p>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
                     Sample 4-Day Launch Sprint
                   </span>
                   <div className="grid sm:grid-cols-2 gap-3">
-                    {BISKIFY_SAMPLE.contentCalendar.slice(0, 4).map((slot, i) => (
+                    {SAMPLE_CAMPAIGN.contentCalendar.slice(0, 4).map((slot, i) => (
                       <div key={i} className="bg-white p-4 rounded-xl border border-purple-100">
                         <div className="flex items-center justify-between mb-1.5">
                           <span className="text-xs font-bold text-[#7138D8]">{slot.day}</span>
@@ -150,7 +150,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
                     Niche & Lifestyle Discovery Tags
                   </span>
                   <div className="flex flex-wrap gap-2.5">
-                    {BISKIFY_SAMPLE.hashtags.map((tag, i) => (
+                    {SAMPLE_CAMPAIGN.hashtags.map((tag, i) => (
                       <span
                         key={i}
                         className="bg-white px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#7138D8] border border-purple-100 shadow-xs"
@@ -160,7 +160,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
                     ))}
                   </div>
                   <p className="text-xs text-gray-500 pt-2">
-                    Combines high-volume mindful lifestyle hashtags with micro-niche artisanal baking tags for maximum discovery.
+                    Combines high-volume biohacking and sleep wellness hashtags with precision health-tech discovery tags.
                   </p>
                 </div>
               )}
@@ -169,7 +169,7 @@ export const SampleShowcase: React.FC<SampleShowcaseProps> = ({ onLoadSample }) 
             {/* Bottom prompt to explore full 12 cards */}
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 bg-purple-50 p-4 rounded-2xl border border-purple-100">
               <span className="font-medium">
-                Want to see the audience insights, budget breakdown, and 12-point matrix for Biskify?
+                Want to see the audience insights, budget breakdown, and 12-point matrix for this launch?
               </span>
               <button
                 onClick={onLoadSample}

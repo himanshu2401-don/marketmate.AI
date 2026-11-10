@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, Shield, FileText, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Sparkles, Shield, FileText, X, Mail, MessageSquare } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
@@ -7,12 +8,16 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-[#21113D] text-purple-200 text-xs py-14 border-t border-[#7138D8]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-10 border-b border-white/10">
-          {/* Brand */}
-          <div className="space-y-2">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 pb-10 border-b border-white/10">
+          {/* Brand & Direct Contact */}
+          <div className="space-y-3 max-w-sm">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#7138D8] to-[#B8A0FF] flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-black/70 border border-[#7138D8]/50 flex items-center justify-center p-1 shadow-md overflow-hidden">
+                <img
+                  src="/assets/aistudio/Purple_Grunge_Respawn_Lab_Logo_9f1cceeb.png"
+                  alt="MarketMate.AI Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="font-bold text-white text-lg tracking-tight">
                 MarketMate<span className="text-[#B8A0FF]">.AI</span>
@@ -21,25 +26,47 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-purple-300 font-medium">
               “Your Ideas. Our Intelligence. Smarter Marketing.”
             </p>
+            {/* Direct updated contacts */}
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] text-purple-200">
+              <a
+                href="mailto:bunkardisha@gmail.com"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                title="Send email to bunkardisha@gmail.com"
+              >
+                <Mail className="w-3.5 h-3.5 text-[#B8A0FF]" />
+                <span>bunkardisha@gmail.com</span>
+              </a>
+              <span className="text-purple-400">·</span>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                <span>WhatsApp: _disha24</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Links */}
+          {/* Navigation Links */}
           <div className="flex flex-wrap gap-x-8 gap-y-3 text-purple-200 text-sm font-medium">
-            <a href="#about" className="hover:text-white transition-colors">
+            <Link to="/" className="hover:text-white transition-colors">
+              Home
+            </Link>
+            <Link to="/campaign-planner" className="hover:text-white transition-colors">
+              Campaign Planner
+            </Link>
+            <Link to="/social-content" className="hover:text-white transition-colors">
+              Social Content
+            </Link>
+            <Link to="/growth-strategy" className="hover:text-white transition-colors">
+              Growth Strategy
+            </Link>
+            <Link to="/about" className="hover:text-white transition-colors">
               About
-            </a>
-            <a href="#features" className="hover:text-white transition-colors">
-              Features
-            </a>
-            <a href="#tools" className="hover:text-white transition-colors">
-              AI Tools
-            </a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">
-              How It Works
-            </a>
-            <a href="#contact" className="hover:text-white transition-colors">
+            </Link>
+            <Link to="/contact" className="hover:text-white transition-colors">
               Contact
-            </a>
+            </Link>
             <button
               onClick={() => setModalType('privacy')}
               className="hover:text-white transition-colors cursor-pointer text-left"
@@ -58,7 +85,7 @@ export const Footer: React.FC = () => {
         {/* Bottom */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-purple-300/80 text-xs">
           <p>© {new Date().getFullYear()} MarketMate.AI — Marketing Engine. All rights reserved.</p>
-          <p>Built for entrepreneurs, founders, students, creators, and small business owners.</p>
+          <p>Direct Inquiries: bunkardisha@gmail.com · WhatsApp: _disha24</p>
         </div>
       </div>
 

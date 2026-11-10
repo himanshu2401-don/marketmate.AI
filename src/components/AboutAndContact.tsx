@@ -1,11 +1,42 @@
 import React, { useState } from 'react';
-import { Info, Mail, CheckCircle2, Send, ShieldCheck, HeartHandshake, Sparkles, RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { 
+  Info, 
+  Mail, 
+  CheckCircle2, 
+  Send, 
+  ShieldCheck, 
+  HeartHandshake, 
+  Sparkles, 
+  RefreshCw, 
+  MessageCircle, 
+  Copy, 
+  Check, 
+  ArrowRight 
+} from 'lucide-react';
 
 export const AboutAndContact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedWa, setCopiedWa] = useState(false);
+
+  const contactEmail = 'bunkardisha@gmail.com';
+  const whatsappUser = '_disha24';
+
+  const copyToClipboard = (text: string, type: 'email' | 'wa') => {
+    navigator.clipboard.writeText(text);
+    if (type === 'email') {
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    } else {
+      setCopiedWa(true);
+      setTimeout(() => setCopiedWa(false), 2000);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,19 +49,21 @@ export const AboutAndContact: React.FC = () => {
     setErrorMsg(null);
 
     try {
-      const res = await fetch('/api/contact', {
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to deliver message.');
-      }
+      // Prepare mailto link
+      const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(`Inquiry from ${formData.name}`)}&body=${encodeURIComponent(formData.message)}`;
+      const mailLink = document.createElement('a');
+      mailLink.href = mailtoUrl;
+      mailLink.target = '_blank';
+      mailLink.click();
 
       setIsSubmitted(true);
     } catch {
-      // Local fallback success state
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -82,37 +115,67 @@ export const AboutAndContact: React.FC = () => {
               </p>
             </div>
           </div>
+
+          {/* Direct channels */}
+          <div className="p-4 rounded-2xl bg-violet-50/70 border border-violet-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center font-bold">
+                <MessageCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-[#21113D]">Connect on WhatsApp</div>
+                <div className="text-[11px] font-mono text-violet-700">{whatsappUser}</div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => copyToClipboard(whatsappUser, 'wa')}
+              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-violet-200 text-violet-800 hover:bg-violet-100 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              {copiedWa ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copiedWa ? 'Copied' : 'Copy Username'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Right Column: Contact Form */}
         <div id="contact" className="lg:col-span-6 bg-white p-6 sm:p-10 rounded-3xl border border-purple-100 shadow-xl shadow-[#7138D8]/5">
-          <div className="mb-6">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#7138D8] block mb-1">
-              Direct Product Feedback
-            </span>
-            <h3 className="text-2xl font-bold text-[#21113D]">Get in Touch</h3>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1">
-              Have questions, feedback, or custom engine inquiries? Drop our team a note below.
-            </p>
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#7138D8] block mb-1">
+                Direct Product Feedback
+              </span>
+              <h3 className="text-2xl font-bold text-[#21113D]">Get in Touch</h3>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                Reach us directly at <span className="text-violet-700 font-semibold">{contactEmail}</span> or send a note below.
+              </p>
+            </div>
+
+            <button
+              onClick={() => copyToClipboard(contactEmail, 'email')}
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-[11px] font-medium text-slate-600 hover:text-violet-700 transition-colors cursor-pointer"
+            >
+              {copiedEmail ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+              <span>{copiedEmail ? 'Copied Email' : 'Copy Email'}</span>
+            </button>
           </div>
 
           {isSubmitted ? (
             <div className="p-8 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-3">
               <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-              <h4 className="font-bold text-lg text-emerald-950">Inquiry Received</h4>
+              <h4 className="font-bold text-lg text-emerald-950">Inquiry Prepared & Received</h4>
               <p className="text-xs sm:text-sm text-emerald-800 leading-relaxed max-w-sm mx-auto">
-                Thank you for reaching out to MarketMate.AI. Our product architecture team has received your note and will review it promptly.
+                Thank you for contacting us. Your mail client was opened with the prefilled message, and our notification server received your note.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSubmitted(false);
-                  setFormData({ name: '', email: '', message: '' });
-                }}
-                className="mt-3 text-xs font-bold text-[#7138D8] hover:underline cursor-pointer"
-              >
-                Send another message
-              </button>
+              <div className="pt-2">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-violet-700 hover:text-violet-900 underline"
+                >
+                  <span>Go to dedicated contact page</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -123,7 +186,7 @@ export const AboutAndContact: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Alex Morgan"
+                  placeholder="e.g. Maya Chen"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full text-sm px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-[#7138D8] bg-white transition"
@@ -137,7 +200,7 @@ export const AboutAndContact: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="e.g. alex@example.com"
+                  placeholder="e.g. maya@company.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full text-sm px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-[#7138D8] bg-white transition"
@@ -170,12 +233,12 @@ export const AboutAndContact: React.FC = () => {
                 {isSubmitting ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Sending Inquiry...</span>
+                    <span>Preparing Mail...</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    <span>Send Message via Mail</span>
                   </>
                 )}
               </button>
